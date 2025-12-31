@@ -3,6 +3,7 @@ package christmas.domain.order;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class Order {
     private final EnumMap<Menu, Integer> orders;
@@ -39,6 +40,14 @@ public class Order {
             totalOrderCount += orderCount;
         }
         return totalOrderCount;
+    }
+
+    public int calculateTotalAmount() {
+        int totalAmount = 0;
+        for (Entry<Menu, Integer> order : orders.entrySet()) {
+            totalAmount += order.getKey().getPrice() * order.getValue();
+        }
+        return totalAmount;
     }
 
     public Map<Menu, Integer> getOrders() {

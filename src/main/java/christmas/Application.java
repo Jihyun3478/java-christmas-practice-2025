@@ -14,6 +14,7 @@ public class Application {
         Calendar calendar = getCalendar();
 
         Order orders = getOrder();
+        System.out.println("12월 " + calendar.visitDay() + "일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!");
         System.out.println("\n<주문 메뉴>");
         for (Map.Entry<Menu, Integer> order : orders.getOrders().entrySet()) {
             Menu orderMenu = order.getKey();
@@ -21,6 +22,12 @@ public class Application {
 
             System.out.println(orderMenu.getName() + " " + orderCount + "개");
         }
+
+        AmountCalculator calculator = new AmountCalculator();
+        int totalAmount = calculator.getTotalAmount(orders);
+
+        System.out.println("\n<할인 전 총주문 금액>");
+        System.out.printf("%,d원", totalAmount);
     }
 
     private static Calendar getCalendar() {
