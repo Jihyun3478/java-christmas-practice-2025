@@ -1,6 +1,7 @@
 package christmas;
 
 import camp.nextstep.edu.missionutils.Console;
+import christmas.domain.event.BadgeEvent;
 import christmas.domain.event.PresentationEvent;
 import christmas.domain.order.Calendar;
 import christmas.domain.order.Menu;
@@ -58,6 +59,10 @@ public class Application {
         System.out.println("\n<할인 후 예상 결제 금액>");
         int finalAmount = calculator.getFinalAmount(orders, calendar);
         System.out.printf("%,d원%n", finalAmount);
+
+        System.out.println("\n<12월 이벤트 배지>");
+        BadgeEvent badge = BadgeEvent.getBadgeByTotalBenefit(totalBenefit);
+        System.out.println(badge.getName());
     }
 
     private static Calendar getCalendar() {
