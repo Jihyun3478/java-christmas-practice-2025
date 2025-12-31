@@ -28,7 +28,7 @@ public class Application {
         int totalAmount = calculator.getTotalAmount(orders);
 
         System.out.println("\n<할인 전 총주문 금액>");
-        System.out.printf("%,d원", totalAmount);
+        System.out.printf("%,d원\n", totalAmount);
 
         System.out.println("\n<증정 메뉴>");
         PresentationEvent presentationEvent = new PresentationEvent();
@@ -40,6 +40,16 @@ public class Application {
             System.out.println("없음");
         }
 
+        System.out.println("\n<혜택 내역>");
+        Map<String, Integer> benefits = calculator.getBenefitDetails(orders, calendar);
+        if (benefits.isEmpty()) {
+            System.out.println("없음");
+        }
+        if (!benefits.isEmpty()) {
+            benefits.forEach((name, amount) ->
+                    System.out.println(name + ": -" + String.format("%,d", amount) + "원")
+            );
+        }
     }
 
     private static Calendar getCalendar() {
