@@ -1,6 +1,7 @@
 package christmas;
 
 import camp.nextstep.edu.missionutils.Console;
+import christmas.domain.event.PresentationEvent;
 import christmas.domain.order.Calendar;
 import christmas.domain.order.Menu;
 import christmas.domain.order.Order;
@@ -28,6 +29,17 @@ public class Application {
 
         System.out.println("\n<할인 전 총주문 금액>");
         System.out.printf("%,d원", totalAmount);
+
+        System.out.println("\n<증정 메뉴>");
+        PresentationEvent presentationEvent = new PresentationEvent();
+        if (presentationEvent.isAvailable(totalAmount)) {
+            String presentName = presentationEvent.getPresentName();
+            System.out.println(presentName + " 1개");
+        }
+        if (!presentationEvent.isAvailable(totalAmount)) {
+            System.out.println("없음");
+        }
+
     }
 
     private static Calendar getCalendar() {
