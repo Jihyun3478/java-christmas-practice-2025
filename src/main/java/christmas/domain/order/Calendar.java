@@ -24,4 +24,8 @@ public record Calendar(
     public boolean isWeekend(int day) {
         return day % 7 == 1 || day % 7 == 2;
     }
+
+    public boolean isSpecial(int day) {
+        return SPECIAL_DAY.contains(day);
+    }
 }
