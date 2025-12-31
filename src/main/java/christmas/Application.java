@@ -1,14 +1,26 @@
 package christmas;
 
 import camp.nextstep.edu.missionutils.Console;
+import christmas.domain.order.Calendar;
+import christmas.domain.order.Menu;
+import christmas.domain.order.Order;
 import java.util.EnumMap;
+import java.util.Map;
 
 public class Application {
     public static void main(String[] args) {
         System.out.println("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.");
 
         Calendar calendar = getCalendar();
-        Order order = getOrder();
+
+        Order orders = getOrder();
+        System.out.println("\n<주문 메뉴>");
+        for (Map.Entry<Menu, Integer> order : orders.getOrders()) {
+            Menu orderMenu = order.getKey();
+            Integer orderCount = order.getValue();
+
+            System.out.println(orderMenu.getName() + " " + orderCount + "개");
+        }
     }
 
     private static Calendar getCalendar() {

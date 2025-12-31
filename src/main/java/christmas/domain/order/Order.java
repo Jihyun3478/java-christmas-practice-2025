@@ -1,6 +1,8 @@
 package christmas.domain.order;
 
 import java.util.EnumMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class Order {
     private final EnumMap<Menu, Integer> orders;
@@ -37,5 +39,9 @@ public class Order {
             totalOrderCount += orderCount;
         }
         return totalOrderCount;
+    }
+
+    public Set<Entry<Menu, Integer>> getOrders() {
+        return orders.entrySet();
     }
 }

@@ -40,4 +40,8 @@ public enum Menu {
     public boolean isDrink() {
         return this.menuType == MenuType.DRINK;
     }
+
+    public String getName() {
+        return name;
+    }
 }
