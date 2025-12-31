@@ -1,4 +1,4 @@
-package christmas;
+package christmas.util;
 
 import christmas.domain.order.Menu;
 import java.util.EnumMap;

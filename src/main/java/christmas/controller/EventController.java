@@ -2,30 +2,34 @@ package christmas.controller;
 
 import camp.nextstep.edu.missionutils.Console;
 import christmas.AmountCalculator;
-import christmas.InputParser;
+import christmas.util.InputParser;
 import christmas.domain.event.BadgeEvent;
 import christmas.domain.event.PresentationEvent;
 import christmas.domain.order.Calendar;
 import christmas.domain.order.Menu;
 import christmas.domain.order.Order;
+import christmas.view.InputView;
+import christmas.view.OutputView;
 import java.util.EnumMap;
 import java.util.Map;
 
 public class EventController {
+    private final InputView inputView;
+    private final OutputView outputView;
+
+    public EventController(InputView inputView, OutputView outputView) {
+        this.inputView = inputView;
+        this.outputView = outputView;
+    }
+
     public void start() {
-        System.out.println("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.");
+        outputView.printStartMessage();
 
         Calendar calendar = getCalendar();
-
         Order orders = getOrder();
-        System.out.println("12월 " + calendar.visitDay() + "일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!");
-        System.out.println("\n<주문 메뉴>");
-        for (Map.Entry<Menu, Integer> order : orders.getOrders().entrySet()) {
-            Menu orderMenu = order.getKey();
-            Integer orderCount = order.getValue();
 
-            System.out.println(orderMenu.getName() + " " + orderCount + "개");
-        }
+        outputView.printIntro(calendar.visitDay());
+        outputView.printMenu(orders.getOrders());
 
         AmountCalculator calculator = new AmountCalculator();
         int totalAmount = calculator.getTotalAmount(orders);
@@ -72,13 +76,12 @@ public class EventController {
         System.out.println(badge.getName());
     }
 
-    private static Calendar getCalendar() {
+    private Calendar getCalendar() {
         while (true) {
             try {
-                System.out.println("12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)");
-                String input = Console.readLine();
-
+                String input = inputView.readDate();
                 int visitDay = InputParser.parseVisitDay(input);
+
                 return new Calendar(visitDay);
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());
@@ -86,13 +89,12 @@ public class EventController {
         }
     }
 
-    private static Order getOrder() {
+    private Order getOrder() {
         while (true) {
             try {
-                System.out.println("주문하실 메뉴를 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)");
-
-                String input = Console.readLine();
+                String input = inputView.readOrders();
                 EnumMap<Menu, Integer> orders = InputParser.parseOrder(input);
+
                 return new Order(orders);
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());

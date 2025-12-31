@@ -2,6 +2,7 @@ package christmas;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import christmas.util.InputParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
