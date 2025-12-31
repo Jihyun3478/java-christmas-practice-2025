@@ -9,7 +9,10 @@ public class WeekendDiscount implements Discount {
 
     @Override
     public boolean isAvailable(Order order, Calendar calendar) {
-        return calendar.isWeekend(calendar.visitDay());
+        if (!calendar.isWeekend(calendar.visitDay())) {
+            return false;
+        }
+        return order.getMenuCountByType(MenuType.MAIN) > 0;
     }
 
     @Override
