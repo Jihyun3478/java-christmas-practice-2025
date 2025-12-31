@@ -1,4 +1,4 @@
-package christmas;
+package christmas.domain.order;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -15,7 +15,7 @@ public class CalendarTest {
         @ValueSource(ints = {0, 32})
         @DisplayName("식당 예상 방문 날짜가 1 이상 31 이하의 숫자가 아닌 경우, 예외가 발생한다.")
         void 식당_예상_방문_날짜가_1이상_31이하의_숫자가_아닌_경우_예외가_발생한다(int visitDay) {
-            assertThatThrownBy(() -> new christmas.Calendar(visitDay))
+            assertThatThrownBy(() -> new Calendar(visitDay))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
         }

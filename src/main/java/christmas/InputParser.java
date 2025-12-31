@@ -1,5 +1,6 @@
 package christmas;
 
+import christmas.domain.order.Menu;
 import java.util.EnumMap;
 
 public class InputParser {
