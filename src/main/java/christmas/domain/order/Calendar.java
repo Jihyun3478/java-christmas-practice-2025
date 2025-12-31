@@ -20,4 +20,8 @@ public record Calendar(
             throw new IllegalArgumentException("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
         }
     }
+
+    public boolean isWeekend(int day) {
+        return day % 7 == 1 || day % 7 == 2;
+    }
 }

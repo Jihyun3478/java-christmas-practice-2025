@@ -41,6 +41,10 @@ public enum Menu {
         return this.menuType == MenuType.DRINK;
     }
 
+    public MenuType getMenuType() {
+        return menuType;
+    }
+
     public String getName() {
         return name;
     }

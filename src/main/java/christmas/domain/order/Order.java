@@ -50,6 +50,13 @@ public class Order {
         return totalAmount;
     }
 
+    public int getMenuCountByType(MenuType type) {
+        return orders.entrySet().stream()
+                .filter(menu -> menu.getKey().getMenuType() == type)
+                .mapToInt(Map.Entry::getValue)
+                .sum();
+    }
+
     public Map<Menu, Integer> getOrders() {
         return Collections.unmodifiableMap(orders);
     }
