@@ -15,7 +15,7 @@ public class Application {
 
         Order orders = getOrder();
         System.out.println("\n<주문 메뉴>");
-        for (Map.Entry<Menu, Integer> order : orders.getOrders()) {
+        for (Map.Entry<Menu, Integer> order : orders.getOrders().entrySet()) {
             Menu orderMenu = order.getKey();
             Integer orderCount = order.getValue();
 
