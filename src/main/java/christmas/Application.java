@@ -50,6 +50,10 @@ public class Application {
                     System.out.println(name + ": -" + String.format("%,d", amount) + "원")
             );
         }
+
+        System.out.println("\n<총혜택 금액>");
+        int totalBenefit = calculator.getTotalBenefit(orders, calendar);
+        System.out.println("-" + String.format("%,d", totalBenefit) + "원");
     }
 
     private static Calendar getCalendar() {
