@@ -1,6 +1,5 @@
 package christmas.controller;
 
-import camp.nextstep.edu.missionutils.Console;
 import christmas.AmountCalculator;
 import christmas.util.InputParser;
 import christmas.domain.event.BadgeEvent;
@@ -34,46 +33,23 @@ public class EventController {
         AmountCalculator calculator = new AmountCalculator();
         int totalAmount = calculator.getTotalAmount(orders);
 
-        System.out.println("\n<할인 전 총주문 금액>");
-        System.out.printf("%,d원%n", totalAmount);
+        outputView.printTotalOrderAmount(totalAmount);
 
-        System.out.println("\n<증정 메뉴>");
         PresentationEvent presentationEvent = new PresentationEvent();
-        if (presentationEvent.isAvailable(totalAmount)) {
-            String presentName = presentationEvent.getPresentName();
-            System.out.println(presentName + " 1개");
-        }
-        if (!presentationEvent.isAvailable(totalAmount)) {
-            System.out.println("없음");
-        }
+        outputView.printPresentEvent(presentationEvent, totalAmount);
 
-        System.out.println("\n<혜택 내역>");
+
         Map<String, Integer> benefits = calculator.getBenefitDetails(orders, calendar);
-        if (benefits.isEmpty()) {
-            System.out.println("없음");
-        }
-        if (!benefits.isEmpty()) {
-            benefits.forEach((name, amount) ->
-                    System.out.printf("%s: -%,d원%n", name, amount)
-            );
-        }
+        outputView.printBenefitDetails(benefits);
 
-        System.out.println("\n<총혜택 금액>");
         int totalBenefit = calculator.getTotalBenefit(orders, calendar);
-        if (totalBenefit == 0) {
-            System.out.printf("%,d원%n", totalBenefit);
-        }
-        if (totalBenefit != 0) {
-            System.out.printf("-%,d원%n", totalBenefit);
-        }
+        outputView.printTotalBenefitAmount(totalBenefit);
 
-        System.out.println("\n<할인 후 예상 결제 금액>");
         int finalAmount = calculator.getFinalAmount(orders, calendar);
-        System.out.printf("%,d원%n", finalAmount);
+        outputView.printFinalAmount(finalAmount);
 
-        System.out.println("\n<12월 이벤트 배지>");
         BadgeEvent badge = BadgeEvent.getBadgeByTotalBenefit(totalBenefit);
-        System.out.println(badge.getName());
+        outputView.printBadge(badge.getName());
     }
 
     private Calendar getCalendar() {
