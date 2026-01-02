@@ -1,6 +1,5 @@
 package christmas.view;
 
-import christmas.domain.event.PresentationEvent;
 import christmas.domain.order.Menu;
 import java.util.Map;
 
@@ -31,14 +30,13 @@ public class OutputView {
         System.out.printf("%,d원%n", totalAmount);
     }
 
-    public void printPresentEvent(PresentationEvent presentationEvent, int totalAmount) {
+    public void printPresentEvent(boolean hasPresent) {
         System.out.println(LINE_SEPARATOR + "<증정 메뉴>");
 
-        if (presentationEvent.isAvailable(totalAmount)) {
-            String presentName = presentationEvent.getPresentName();
-            System.out.println(presentName + " 1개");
+        if (hasPresent) {
+            System.out.println("샴페인 1개");
         }
-        if (!presentationEvent.isAvailable(totalAmount)) {
+        if (!hasPresent) {
             System.out.println("없음");
         }
     }

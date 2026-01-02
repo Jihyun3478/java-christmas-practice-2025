@@ -1,25 +1,27 @@
 package christmas.controller;
 
-import christmas.AmountCalculator;
-import christmas.util.InputParser;
+import christmas.domain.dto.BenefitInfo;
+import christmas.domain.dto.PaymentInfo;
 import christmas.domain.event.BadgeEvent;
-import christmas.domain.event.PresentationEvent;
 import christmas.domain.order.Calendar;
 import christmas.domain.order.Menu;
 import christmas.domain.order.Order;
+import christmas.service.EventService;
+import christmas.util.InputParser;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 import java.util.EnumMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class EventController {
     private final InputView inputView;
     private final OutputView outputView;
+    private final EventService eventService;
 
-    public EventController(InputView inputView, OutputView outputView) {
+    public EventController(InputView inputView, OutputView outputView, EventService eventService) {
         this.inputView = inputView;
         this.outputView = outputView;
+        this.eventService = eventService;
     }
 
     public void start() {
@@ -28,28 +30,29 @@ public class EventController {
         Calendar calendar = getCalendar();
         Order orders = getOrder();
 
+        printOrderInfo(calendar, orders);
+        printEventResult(orders, calendar);
+    }
+
+    private void printOrderInfo(Calendar calendar, Order orders) {
         outputView.printIntro(calendar.visitDay());
         outputView.printMenu(orders.getOrders());
+    }
 
-        AmountCalculator calculator = new AmountCalculator();
-        int totalAmount = calculator.getTotalAmount(orders);
+    private void printEventResult(Order orders, Calendar calendar) {
+        PaymentInfo paymentInfo = eventService.calculatePaymentInfo(orders, calendar);
+        outputView.printTotalOrderAmount(paymentInfo.totalAmount());
 
-        outputView.printTotalOrderAmount(totalAmount);
+        boolean hasPresent = eventService.hasPresentEvent(paymentInfo.totalAmount());
+        outputView.printPresentEvent(hasPresent);
 
-        PresentationEvent presentationEvent = new PresentationEvent();
-        outputView.printPresentEvent(presentationEvent, totalAmount);
+        BenefitInfo benefitInfo = eventService.calculateBenefitInfo(orders, calendar);
+        outputView.printBenefitDetails(benefitInfo.benefitDetails());
+        outputView.printTotalBenefitAmount(benefitInfo.totalBenefitAmount());
 
+        outputView.printFinalAmount(paymentInfo.finalAmount());
 
-        Map<String, Integer> benefits = calculator.getBenefitDetails(orders, calendar);
-        outputView.printBenefitDetails(benefits);
-
-        int totalBenefit = calculator.getTotalBenefit(orders, calendar);
-        outputView.printTotalBenefitAmount(totalBenefit);
-
-        int finalAmount = calculator.getFinalAmount(orders, calendar);
-        outputView.printFinalAmount(finalAmount);
-
-        BadgeEvent badge = BadgeEvent.getBadgeByTotalBenefit(totalBenefit);
+        BadgeEvent badge = eventService.calculateBadge(benefitInfo.totalBenefitAmount());
         outputView.printBadge(badge.getName());
     }
 
