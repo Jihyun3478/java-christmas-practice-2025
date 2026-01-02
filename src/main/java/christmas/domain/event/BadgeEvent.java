@@ -1,7 +1,5 @@
 package christmas.domain.event;
 
-import java.util.Arrays;
-
 public enum BadgeEvent {
     NONE("없음", 0),
     STAR("별", 5_000),
