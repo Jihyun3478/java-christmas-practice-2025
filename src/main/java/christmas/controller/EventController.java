@@ -11,6 +11,7 @@ import christmas.view.InputView;
 import christmas.view.OutputView;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class EventController {
     private final InputView inputView;
@@ -53,27 +54,29 @@ public class EventController {
     }
 
     private Calendar getCalendar() {
-        while (true) {
-            try {
-                String input = inputView.readDate();
-                int visitDay = InputParser.parseVisitDay(input);
+        return retryUntilSuccess(() -> {
+            String input = inputView.readDate();
+            int visitDay = InputParser.parseVisitDay(input);
 
-                return new Calendar(visitDay);
-            } catch (IllegalArgumentException exception) {
-                System.out.println(exception.getMessage());
-            }
-        }
+            return new Calendar(visitDay);
+        });
     }
 
     private Order getOrder() {
+        return retryUntilSuccess(() -> {
+            String input = inputView.readOrders();
+            EnumMap<Menu, Integer> orders = InputParser.parseOrder(input);
+
+            return new Order(orders);
+        });
+    }
+
+    private <T> T retryUntilSuccess(Supplier<T> action) {
         while (true) {
             try {
-                String input = inputView.readOrders();
-                EnumMap<Menu, Integer> orders = InputParser.parseOrder(input);
-
-                return new Order(orders);
-            } catch (IllegalArgumentException exception) {
-                System.out.println(exception.getMessage());
+                return action.get();
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e);
             }
         }
     }

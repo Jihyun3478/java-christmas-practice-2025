@@ -76,4 +76,8 @@ public class OutputView {
         System.out.println(LINE_SEPARATOR + "<12월 이벤트 배지>");
         System.out.println(badgeName);
     }
+
+    public void printErrorMessage(IllegalArgumentException exception) {
+        System.out.println(exception.getMessage());
+    }
 }
